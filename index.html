@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bar Automatico di Carlo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef9ff,#dff5ff,#fff2d8);color:#16285f}
+header{padding:24px 16px;text-align:center}
+h1{margin:0;font-size:42px;font-style:italic}
+h1 span{color:#ff7a00}
+.sub{font-size:18px;font-weight:bold;margin-top:10px}
+.cat{margin:24px auto 12px;width:max-content;padding:12px 30px;border-radius:999px;background:rgba(255,255,255,.7);backdrop-filter:blur(10px);font-size:30px;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 14px 22px}
+.card{background:rgba(255,255,255,.55);border-radius:28px;padding:20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.08);cursor:pointer}
+.emoji{font-size:58px}
+.name{font-size:22px;font-weight:bold;margin-top:8px}
+.ing{font-size:14px;color:#555;min-height:36px}
+.price{display:inline-block;background:#ff8600;color:#fff;font-weight:bold;font-size:28px;padding:10px 22px;border-radius:999px;margin-top:12px}
+#overlay{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center}
+#box{background:white;padding:24px;border-radius:20px;width:90%;max-width:360px;text-align:center}
+button{padding:12px 20px;border:none;border-radius:12px;font-size:18px;margin:6px;cursor:pointer}
+.ok{background:#ff8600;color:#fff}.no{background:#ddd}
+</style>
+</head>
+<body>
+<header>
+<h1>Bar Automatico <span>di Carlo</span></h1>
+<div class="sub">Scegli le tue bevande preferite</div>
+</header>
+
+<div id="menu"></div>
+
+<div id="overlay"><div id="box">
+<h2 id="tit"></h2>
+<p id="prezzo"></p>
+<button class="ok" onclick="paga()">Paga</button>
+<button class="no" onclick="chiudi()">Annulla</button>
+</div></div>
+
+<script>
+const LINKS=[
+"https://pay.sumup.com/b2c/QAQIPGXG", "https://pay.sumup.com/b2c/QI12BR38", "https://pay.sumup.com/b2c/QZTH7BFI", "https://pay.sumup.com/b2c/QGFHQN1B", "https://pay.sumup.com/b2c/QG4B3HUE", "https://pay.sumup.com/b2c/QN8CF7TJ", "https://pay.sumup.com/b2c/Q688XUI0", "https://pay.sumup.com/b2c/QZ8ATVPG", "https://pay.sumup.com/b2c/QU3454JE", "https://pay.sumup.com/b2c/QKTD7URM", "https://pay.sumup.com/b2c/Q6LPAZHR", "https://pay.sumup.com/b2c/QPECSG00", "https://pay.sumup.com/b2c/QZ3HZL4Q", "https://pay.sumup.com/b2c/Q4P5P96K", "https://pay.sumup.com/b2c/QDGN2JBD", "https://pay.sumup.com/b2c/QEQXMDJK"
+];
+const sezioni=[
+["💧 Acque",[
+["💧","Acqua Naturale","Acqua naturale","1,00 €"],
+["🫧","Acqua Frizzante","Acqua frizzante","1,00 €"]]],
+["🥤 Bibite",[
+["🥤","Coca Cola","Coca Cola","3,00 €"],
+["🧋","Tè Pesca","Tè pesca","3,00 €"],
+["🍋","Limonata","Limonata","3,00 €"]]],
+["🍸 Drink",[
+["🍹","Spritz","Aperol • Prosecco • Acqua frizzante","5,00 €"],
+["🍸","Gin Lemon","Gin • Limonata","5,00 €"],
+["🍊","Aperol Lemon","Aperol • Limonata","5,00 €"],
+["🍑","Peach Sparkle","Tè pesca • Frizzante","5,00 €"],
+["🌅","Sunset Fresh","Aperol • Aranciata","5,00 €"],
+["✨","Gin Spark","Gin • Frizzante","5,00 €"],
+["🍊","Aperol Fresh","Aperol • Frizzante","5,00 €"],
+["🍑","Peach Sunset","Pesca • Aranciata","5,00 €"],
+["🥃","Cola Gin","Gin • Coca Cola","5,00 €"]]],
+["🥂 Drink Gold",[
+["🥂","Golden Spritz","Aperol • Prosecco • Limonata","6,00 €"],
+["🍾","Bicchiere di Prosecco","Prosecco","6,00 €"]]]
+];
+let idx=0,sel=-1;
+const menu=document.getElementById('menu');
+sezioni.forEach(sec=>{
+ let h=document.createElement('div');h.className='cat';h.textContent=sec[0];menu.appendChild(h);
+ let g=document.createElement('div');g.className='grid';
+ sec[1].forEach(d=>{
+   const my=idx++;
+   let c=document.createElement('div');c.className='card';
+   c.innerHTML=`<div class=emoji>${d[0]}</div><div class=name>${d[1]}</div><div class=ing>${d[2]}</div><div class=price>${d[3]}</div>`;
+   c.onclick=()=>{sel=my;tit.textContent="Hai selezionato "+d[1];prezzo.textContent="Prezzo: "+d[3];overlay.style.display="flex";}
+   g.appendChild(c);
+ });
+ menu.appendChild(g);
+});
+function chiudi(){overlay.style.display='none';}
+function paga(){if(LINKS[sel])location.href=LINKS[sel];else alert("Incolla i link SumUp del tavolo nell'array LINKS.");}
+</script>
+</body></html>
